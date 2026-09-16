@@ -1,0 +1,11 @@
+{
+  "name": "microsoft-foundry-architecture-deck",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node generate.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
