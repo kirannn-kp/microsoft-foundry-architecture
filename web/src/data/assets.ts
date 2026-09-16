@@ -69,8 +69,8 @@ export function getLogoUrl(moduleId: string): string | undefined {
  * automatically, replacing the neutral placeholder mark.
  */
 export const brandAssets = {
-  microsoft: 'microsoft-logo.svg',
-  foundry: 'microsoft-foundry-logo.svg'
+  microsoft: 'microsoft-logo.png',
+  foundry: 'microsoft-foundry-logo.png'
 } as const;
 
 export function getBrandLogoUrl(brand: keyof typeof brandAssets): string | undefined {

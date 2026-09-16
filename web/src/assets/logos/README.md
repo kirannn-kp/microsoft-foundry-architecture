@@ -8,10 +8,10 @@ README section 'Product assets' for sources and terms.
 
 ## Header brand marks
 
-Add these two files to replace the neutral placeholder mark in the top-left
-header with the real logos:
+These two files replace the neutral placeholder mark in the top-left header
+with the real logos:
 
 | File | Logo |
 | --- | --- |
-| `microsoft-logo.svg` | Microsoft logo |
-| `microsoft-foundry-logo.svg` | Microsoft Foundry logo |
+| `microsoft-logo.png` | Microsoft logo |
+| `microsoft-foundry-logo.png` | Microsoft Foundry logo |
