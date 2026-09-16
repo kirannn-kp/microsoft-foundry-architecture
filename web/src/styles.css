@@ -140,6 +140,22 @@ kbd {
   background: var(--cyan);
 }
 
+.brand__marks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand__logo {
+  height: 26px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand__logo--foundry {
+  height: 22px;
+}
+
 .brand__text {
   display: flex;
   flex-direction: column;

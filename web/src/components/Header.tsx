@@ -1,4 +1,5 @@
 import { Maximize2, Pause, Play, Presentation, RotateCcw } from 'lucide-react';
+import { getBrandLogoUrl } from '../data/assets';
 import type { StoryState } from '../hooks/useArchitectureStory';
 
 type Props = {
@@ -7,14 +8,24 @@ type Props = {
 };
 
 export function Header({ story, onFullscreen }: Props) {
+  const microsoftLogo = getBrandLogoUrl('microsoft');
+  const foundryLogo = getBrandLogoUrl('foundry');
+
   return (
     <header className="app-header">
       <div className="brand">
-        <span className="brand__mark" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </span>
+        {microsoftLogo || foundryLogo ? (
+          <span className="brand__marks" aria-hidden="true">
+            {microsoftLogo ? <img src={microsoftLogo} alt="" className="brand__logo" /> : null}
+            {foundryLogo ? <img src={foundryLogo} alt="" className="brand__logo brand__logo--foundry" /> : null}
+          </span>
+        ) : (
+          <span className="brand__mark" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+        )}
         <span className="brand__text">
           <span className="brand__title">Microsoft Foundry</span>
           <span className="brand__subtitle">The AI app and agent factory</span>

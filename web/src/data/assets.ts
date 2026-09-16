@@ -63,5 +63,19 @@ export function getLogoUrl(moduleId: string): string | undefined {
   return asset ? byFileName.get(asset.file) : undefined;
 }
 
+/**
+ * Header brand marks. Same drop-in mechanism as product icons: place the
+ * official files below in `src/assets/logos/` and the header picks them up
+ * automatically, replacing the neutral placeholder mark.
+ */
+export const brandAssets = {
+  microsoft: 'microsoft-logo.svg',
+  foundry: 'microsoft-foundry-logo.svg'
+} as const;
+
+export function getBrandLogoUrl(brand: keyof typeof brandAssets): string | undefined {
+  return byFileName.get(brandAssets[brand]);
+}
+
 /** Assets referenced by the architecture but not yet supplied locally. */
 export const missingAssets = productAssets.filter((asset) => !byFileName.has(asset.file));
