@@ -1,7 +1,15 @@
 import { motion } from 'framer-motion';
 import type { ArchitectureLayer as LayerData, ArchitectureModule } from '../data/architecture';
 import { getProductAsset } from '../data/assets';
-import { BILLBOARD_TRANSFORM, layerElevation, PLANE_H, PLANE_W, SCREEN_LEFT_VECTOR } from '../lib/iso';
+import {
+  BILLBOARD_TRANSFORM,
+  layerElevation,
+  PLANE_H,
+  PLANE_W,
+  RECEDED_LAYER_DROP,
+  SCREEN_LEFT_VECTOR,
+  SELECTED_LAYER_LIFT
+} from '../lib/iso';
 import { ModuleIcon } from './ModuleIcon';
 import { PlateArt } from './PlateArt';
 
@@ -85,7 +93,7 @@ type Props = {
   hovered: boolean;
   dimmed: boolean;
   focused: boolean;
-  /** True when a lower layer is selected and this one would occlude it. */
+  /** True for every layer except the one currently selected, so it recedes. */
   faded: boolean;
   reducedMotion: boolean;
   selectedModuleId: string | null;
@@ -112,9 +120,11 @@ export function ArchitectureLayer({
   registerButton
 }: Props) {
   const baseZ = layerElevation(index);
-  const lift = selected ? 34 : hovered ? 14 : 0;
-  const targetZ = revealed ? baseZ + lift + (faded ? 30 : 0) : baseZ - 70;
-  const opacity = revealed ? (faded ? 0.07 : dimmed ? 0.62 : 1) : 0;
+  const lift = faded ? 0 : selected ? SELECTED_LAYER_LIFT : hovered ? 14 : 0;
+  // Isolating a layer drops the rest of the stack far below it so the chosen
+  // plane reads as a single, unobstructed board.
+  const targetZ = revealed ? baseZ + lift - (faded ? RECEDED_LAYER_DROP : 0) : baseZ - 70;
+  const opacity = revealed ? (faded ? 0.22 : dimmed ? 0.62 : 1) : 0;
 
   const transition = reducedMotion
     ? { duration: 0 }
@@ -129,7 +139,7 @@ export function ArchitectureLayer({
         transformStyle: 'preserve-3d',
         width: PLANE_W,
         height: PLANE_H,
-        pointerEvents: faded || !revealed ? 'none' : 'auto'
+        pointerEvents: !revealed ? 'none' : 'auto'
       }}
       initial={false}
       animate={{ z: targetZ, opacity }}

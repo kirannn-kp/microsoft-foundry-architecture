@@ -96,10 +96,10 @@ export function ArchitectureScene({ story, compact, reducedMotion }: Props) {
               const hovered = story.hoveredId === layer.id;
               const focused = story.focusedLayerId === layer.id;
               const dimmed = Boolean(story.dimSourceId) && story.dimSourceId !== layer.id;
-              // X-ray only when a whole layer is selected; a component selection
-              // must leave every other block reachable.
+              // Selecting a whole layer sends every other layer far back so
+              // it stands alone. A component selection leaves the stack intact.
               const faded =
-                selectedIndex !== -1 && index > selectedIndex && !story.selectedModuleId;
+                selectedIndex !== -1 && index !== selectedIndex && !story.selectedModuleId;
 
               return (
                 <ArchitectureLayer
@@ -124,15 +124,15 @@ export function ArchitectureScene({ story, compact, reducedMotion }: Props) {
           </div>
         </motion.div>
 
-        {/* Only an explicit layer click reveals its full set of relationships —
-            hovering alone would flood the plane with arrows. Inspecting a
-            single component hides flows entirely so nothing crosses its label. */}
-        {!story.selectedModuleId && (
+        {/* Flows are drawn against the resting elevations of the stack, so they
+            are hidden whenever a layer or component is isolated — the other
+            planes have moved and the arrows would land nowhere. */}
+        {!story.selectedModuleId && !story.selectedId && (
           <FlowLines
             revealedSteps={story.revealedSteps}
             focusedLayerId={story.selectedId}
             flowFilter={story.flowFilter}
-            animateDraw={story.playing || Boolean(story.selectedId)}
+            animateDraw={story.playing}
             reducedMotion={reducedMotion}
           />
         )}

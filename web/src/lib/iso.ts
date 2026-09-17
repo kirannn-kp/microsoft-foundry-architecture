@@ -25,6 +25,12 @@ export const LAYER_ELEVATIONS = [0, 84, 168, 252, 336, 458];
 
 const TOTAL_RISE = LAYER_ELEVATIONS[LAYER_ELEVATIONS.length - 1];
 
+/** Extra elevation given to a layer while it is isolated by a click. */
+export const SELECTED_LAYER_LIFT = 60;
+
+/** How far the remaining layers drop away while one layer is isolated. */
+export const RECEDED_LAYER_DROP = 220;
+
 /** Nominal design box the scene is authored against; scaled to fit the stage. */
 export const DESIGN_W = 1230;
 // Includes headroom for perspective magnification along the near edge.

@@ -1,5 +1,5 @@
 import { architectureLayers, layerIndexById } from '../data/architecture';
-import { DESIGN_H, DESIGN_W, projectOnLayer, toSvg } from '../lib/iso';
+import { DESIGN_H, DESIGN_W, SELECTED_LAYER_LIFT, projectOnLayer, toSvg } from '../lib/iso';
 
 /**
  * Click targets and name labels for every component, drawn in flat screen
@@ -31,17 +31,17 @@ export function ModuleHotspots({
       {architectureLayers.map((layer) => {
         if (layer.step > revealedSteps) return null;
         const layerIndex = layerIndexById[layer.id];
-        const hiddenByXray =
-          selectedLayerId !== null &&
-          !selectedModuleId &&
-          layerIndex > layerIndexById[selectedLayerId];
-        if (hiddenByXray) return null;
+        // While a layer is isolated the rest of the stack has receded, so only
+        // the chosen layer keeps its names and click targets.
+        const isolated = selectedLayerId !== null && !selectedModuleId;
+        if (isolated && layer.id !== selectedLayerId) return null;
 
         return layer.modules
           .filter((module) => module.icon)
           .map((module) => {
             const selected = selectedModuleId === module.id;
-            const lift = module.emphasis ? 8 : 5;
+            // Matches the lift applied to the isolated plane in ArchitectureLayer.
+            const lift = (module.emphasis ? 8 : 5) + (isolated ? SELECTED_LAYER_LIFT : 0);
             const point = toSvg(
               projectOnLayer(module.position.x, module.position.y, layerIndex, lift)
             );
